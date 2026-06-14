@@ -7,44 +7,121 @@ st.set_page_config(
     layout="wide"
 )
 
+# -----------------------------
+# HEADER
+# -----------------------------
+
 st.title("📊 Due Diligence Copilot")
 
-st.write(
-    "Generate AI-powered company due diligence reports."
+st.caption(
+    "AI-powered company due diligence reports using web research, financial data, and LLM analysis."
 )
+
+# -----------------------------
+# SIDEBAR
+# -----------------------------
 
 with st.sidebar:
 
     st.header("About")
 
     st.write("""
-    AI-powered Due Diligence Tool
+    **Due Diligence Copilot V1**
+    
+    Generate structured due diligence reports covering:
+    
+    - Company Overview
+    - Business Model
+    - Financial Overview
+    - Competitive Landscape
+    - Management & Leadership
+    - Recent Developments
+    - Opportunities
+    - Risks
+    - Source-backed Analysis
     """)
 
-company = st.text_input(
-    "Company Name",
-    placeholder="NVIDIA"
+    st.markdown("---")
+
+    st.write(
+        "⚠️ Reports are generated using publicly available information and should be independently verified."
+    )
+
+# -----------------------------
+# COMPANY SELECTION
+# -----------------------------
+
+supported_companies = [
+    "NVIDIA",
+    "Microsoft",
+    "Amazon",
+    "Apple",
+    "Meta",
+    "Alphabet",
+    "Tesla",
+    "Infosys",
+    "TCS",
+    "Reliance"
+]
+
+selected_company = st.selectbox(
+    "Select a Company",
+    ["Custom Company"] + supported_companies
 )
 
-if st.button("Generate Report"):
+if selected_company == "Custom Company":
 
-    if company.strip() == "":
+    company = st.text_input(
+        "Enter Company Name",
+        placeholder="Example: OpenAI"
+    )
+
+else:
+
+    company = selected_company
+
+st.divider()
+
+# -----------------------------
+# GENERATE REPORT
+# -----------------------------
+
+if st.button(
+    "🚀 Generate Due Diligence Report",
+    use_container_width=True
+):
+
+    if not company or company.strip() == "":
 
         st.warning("Please enter a company name.")
 
     else:
 
-        with st.spinner("Performing due diligence... (please wait may take 20-40 secs)"):
+        try:
 
-            report = generate(company)
+            with st.spinner(
+                "Performing due diligence... This may take 20-60 seconds."
+            ):
 
-        st.success("Report Generated")
+                report = generate(company)
 
-        st.markdown(report)
+            st.success("Report Generated Successfully")
 
-        st.download_button(
-            label="📥 Download Report",
-            data=report,
-            file_name=f"{company}_report.txt",
-            mime="text/plain"
-        )
+            st.markdown("---")
+            st.subheader("Generated Report")
+
+            st.markdown(report)
+
+            st.download_button(
+                label="📥 Download Report",
+                data=report,
+                file_name=f"{company.lower().replace(' ', '_')}_due_diligence_report.txt",
+                mime="text/plain",
+                use_container_width=True
+            )
+
+        except Exception as e:
+
+            st.error("An error occurred while generating the report.")
+
+            st.exception(e)
