@@ -4,7 +4,7 @@ import requests
 import trafilatura
 from dotenv import load_dotenv
 import os
-
+from groq import Groq
 try:
     import streamlit as st
 
