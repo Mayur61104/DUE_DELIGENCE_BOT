@@ -247,16 +247,9 @@ def summarize_section(
 
     return response.choices[0].message.content
 
-from groq import Groq
-
-client = Groq(api_key=key2)
-
-print("groq client initialized")
-
-
-from groq import Groq
-
 def generate(input_query):
+    from groq import Groq
+    client = Groq(api_key=key2)
     serper_relevant = {}
     serper_results = {}
     serper_links = {}
