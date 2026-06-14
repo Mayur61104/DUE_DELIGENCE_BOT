@@ -34,7 +34,7 @@ if st.button("Generate Report"):
 
     else:
 
-        with st.spinner("Performing due diligence..."):
+        with st.spinner("Performing due diligence... (please wait may take 20-40 secs"):
 
             report = generate(company)
 
