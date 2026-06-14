@@ -4,14 +4,20 @@ import requests
 import trafilatura
 from dotenv import load_dotenv
 import os
-load_dotenv()
 
-key2 = os.getenv("GROQ_API_KEY")
-key = os.getenv("SERPER_API_KEY")
+try:
+    import streamlit as st
 
-print("GROQ:", key2)
-print("SERPER:", key)
+    key2 = st.secrets["GROQ_API_KEY"]
+    key = st.secrets["SERPER_API_KEY"]
 
+except Exception:
+    from dotenv import load_dotenv
+
+    load_dotenv()
+
+    key2 = os.getenv("GROQ_API_KEY")
+    key = os.getenv("SERPER_API_KEY")
 def query_search(q):
     url = "https://google.serper.dev/search"
 
@@ -366,19 +372,21 @@ def generate(input_query):
 
     #percentages financial
 
-    profit_margin = round(
-    financial_relevants.get("profitMargins", 0) * 100,
-    2
+    def format_percentage(value):
+        if isinstance(value, (int, float)):
+            return round(value * 100, 2)
+        return "Not Available"
+    
+    profit_margin = format_percentage(
+        financial_relevants.get("profitMargins")
     )
-
-    operating_margin = round(
-        financial_relevants.get("operatingMargins", 0) * 100,
-        2
+    
+    operating_margin = format_percentage(
+        financial_relevants.get("operatingMargins")
     )
-
-    roe = round(
-        financial_relevants.get("returnOnEquity", 0) * 100,
-        2
+    
+    roe = format_percentage(
+        financial_relevants.get("returnOnEquity")
     )
 
 
