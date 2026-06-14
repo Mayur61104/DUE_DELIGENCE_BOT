@@ -211,7 +211,7 @@ def summarize_section(
     serper_relevant,
     traf_text
 ):
-
+    client = Groq(api_key=key2)
     raw_text = build_section_text(
         section_name,
         serper_relevant,
