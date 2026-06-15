@@ -302,10 +302,17 @@ def generate(input_query):
         traf_text[section] = extract_article(links)
 
     #financial data
+    try:
+
     yfinance_res = financial_data(company_name)
 
-    #financial relevants
     financial_relevants = relevant_financials(yfinance_res)
+
+    except Exception as e:
+
+    print(f"Financial Data Error: {e}")
+
+    financial_relevants = {}
 
     #building text from source,title , snippet and traf_text and then summary
     overview_summary = summarize_section(
